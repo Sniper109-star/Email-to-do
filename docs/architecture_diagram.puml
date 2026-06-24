@@ -1,0 +1,71 @@
+@startuml AgentFlow Architecture
+!theme plain
+skinparam backgroundColor #09090b
+skinparam defaultTextAlignment center
+
+package "Frontend - Next.js 16" {
+  [Mobile Web App] as Mobile
+  [Landing Page] as Landing
+  [Dashboard] as Dashboard
+  [API Routes] as API
+}
+
+package "Backend - Supabase" {
+  [Supabase Auth] as Auth
+  [PostgreSQL DB] as DB
+  [Edge Functions] as Edge
+}
+
+package "AI Agents" {
+  [LangGraph] as LangGraph
+  [CrewAI] as CrewAI
+  [OpenAI/Claude] as LLM
+}
+
+package "Workflows" {
+  [Trigger.dev] as Trigger
+}
+
+package "Communications" {
+  package "Email" {
+    [Resend] as Resend
+    [AgentMail] as AgentMail
+    [Brevo] as Brevo
+  }
+  package "Notifications" {
+    [OneSignal] as OneSignal
+    [Knock] as Knock
+  }
+}
+
+package "Blockchain" {
+  [Monad RPC] as Monad
+  [Smart Contracts] as Contracts
+}
+
+' Connections
+Mobile --> API : HTTP
+Landing --> Mobile : navigate
+Dashboard --> API : fetch
+API --> DB : queries
+API --> Auth : verify
+API --> Edge : invoke
+
+Edge --> LangGraph : trigger
+Edge --> CrewAI : orchestrate
+LangGraph --> LLM : call
+CrewAI --> LLM : call
+
+API --> Trigger : schedule events
+Trigger --> Edge : execute workflows
+
+Edge --> Resend : send email
+Edge --> AgentMail : send email
+Edge --> Brevo : send email
+Edge --> OneSignal : push
+Edge --> Knock : in-app
+
+Edge --> Monad : submit tx
+Monad --> Contracts : interact
+
+@enduml

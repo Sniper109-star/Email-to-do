@@ -1,0 +1,110 @@
+@startuml Database Schema
+!theme plain
+skinparam backgroundColor #09090b
+skinparam defaultTextAlignment center
+skinparam classBackgroundColor #18181b
+skinparam classBorderColor #27272a
+skinparam classFontColor #fafafa
+skinparam classArrowColor #a1a1aa
+
+entity "profiles" as profiles {
+  *id : UUID <<PK>>
+  --
+  *email : TEXT <<UNIQUE>>
+  full_name : TEXT
+  avatar_url : TEXT
+  plan : TEXT
+  created_at : TIMESTAMPTZ
+  updated_at : TIMESTAMPTZ
+}
+
+entity "agents" as agents {
+  *id : UUID <<PK>>
+  --
+  *user_id : UUID <<FK>>
+  *name : TEXT
+  *type : TEXT
+  status : TEXT
+  config : JSONB
+  last_run : TIMESTAMPTZ
+  created_at : TIMESTAMPTZ
+  updated_at : TIMESTAMPTZ
+}
+
+entity "workflows" as workflows {
+  *id : UUID <<PK>>
+  --
+  *user_id : UUID <<FK>>
+  *name : TEXT
+  description : TEXT
+  *workflow_id : TEXT
+  schedule : TEXT
+  status : TEXT
+  config : JSONB
+  last_run : TIMESTAMPTZ
+  created_at : TIMESTAMPTZ
+  updated_at : TIMESTAMPTZ
+}
+
+entity "email_campaigns" as emails {
+  *id : UUID <<PK>>
+  --
+  *user_id : UUID <<FK>>
+  *name : TEXT
+  *provider : TEXT
+  *subject : TEXT
+  *body : TEXT
+  recipients : JSONB
+  status : TEXT
+  sent_at : TIMESTAMPTZ
+  created_at : TIMESTAMPTZ
+  updated_at : TIMESTAMPTZ
+}
+
+entity "notifications" as notifs {
+  *id : UUID <<PK>>
+  --
+  *user_id : UUID <<FK>>
+  *title : TEXT
+  *body : TEXT
+  type : TEXT
+  channels : JSONB
+  data : JSONB
+  read : BOOLEAN
+  created_at : TIMESTAMPTZ
+}
+
+entity "monad_transactions" as tx {
+  *id : UUID <<PK>>
+  --
+  *user_id : UUID <<FK>>
+  *hash : TEXT <<UNIQUE>>
+  *from_address : TEXT
+  *to_address : TEXT
+  *value : TEXT
+  status : TEXT
+  block_number : BIGINT
+  created_at : TIMESTAMPTZ
+}
+
+entity "trigger_events" as events {
+  *id : UUID <<PK>>
+  --
+  *user_id : UUID <<FK>>
+  *event : TEXT
+  *workflow : TEXT
+  payload : JSONB
+  status : TEXT
+  result : JSONB
+  created_at : TIMESTAMPTZ
+  completed_at : TIMESTAMPTZ
+}
+
+profiles ||--o{ agents : "owns"
+profiles ||--o{ workflows : "owns"
+profiles ||--o{ emails : "owns"
+profiles ||--o{ notifs : "receives"
+profiles ||--o{ tx : "executes"
+profiles ||--o{ events : "triggers"
+
+@enduml

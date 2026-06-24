@@ -1,0 +1,32 @@
+```mermaid
+flowchart LR
+    A([Trigger Event]) --> B{Workflow\nScheduler}
+    B -->|Cron| C[Start Workflow]
+    B -->|Manual| C
+    C --> D[Load Config]
+    D --> E[Initialize Agent]
+    E --> F[Execute Tasks]
+    F --> G{Task Type}
+
+    G -->|Agent| H[LangGraph /\nCrewAI Agent]
+    G -->|Email| I[Resend /\nAgentMail /\nBrevo]
+    G -->|Notify| J[OneSignal /\nKnock]
+    G -->|Blockchain| K[Monad RPC /\nSmart Contract]
+
+    H --> L[Process with LLM]
+    L --> M[Save Results]
+    I --> M
+    J --> M
+    K --> M
+
+    M --> N{Success?}
+    N -->|Yes| O[Notify User]
+    N -->|No| P[Retry Logic]
+    P -->|Max Retries| Q[Alert Admin]
+    P -->|< Max| G
+    O --> R([End])
+
+    style A fill:#3b82f6,color:#fff
+    style R fill:#22c55e,color:#fff
+    style P fill:#ef4444,color:#fff
+```

@@ -1,0 +1,59 @@
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        A[Mobile Web App]
+        B[Landing Page]
+        C[Dashboard]
+    end
+
+    subgraph "API Layer"
+        D[Next.js API Routes]
+        E[Supabase Auth Middleware]
+    end
+
+    subgraph "Data Layer"
+        F[(PostgreSQL)]
+        G[Supabase Edge Functions]
+    end
+
+    subgraph "AI Layer"
+        H[LangGraph]
+        I[CrewAI]
+        J[LLMs - GPT-4/Claude]
+    end
+
+    subgraph "Workflow Layer"
+        K[Trigger.dev]
+    end
+
+    subgraph "Communication Layer"
+        L[Email: Resend/AgentMail/Brevo]
+        M[Notifications: OneSignal/Knock]
+    end
+
+    subgraph "Blockchain Layer"
+        N[Monad RPC]
+        O[Smart Contracts]
+    end
+
+    A --> D
+    B --> A
+    C --> D
+    D --> E
+    E --> G
+    D --> F
+    G --> H
+    G --> I
+    H --> J
+    I --> J
+    G --> K
+    K --> G
+    G --> L
+    G --> M
+    G --> N
+    N --> O
+
+    style A fill:#3b82f6,color:#fff
+    style H fill:#8b5cf6,color:#fff
+    style N fill:#f97316,color:#fff
+```
