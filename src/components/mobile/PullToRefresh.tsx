@@ -47,23 +47,23 @@ export function PullToRefresh({ onRefresh, children, className }: PullToRefreshP
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
-      <motion.div
-        className="absolute top-0 left-0 right-0 flex justify-center items-center h-20"
-        style={{ y, rotate, opacity }}
-      >
-        <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-          <path d="M21 3v5h-5" />
-        </svg>
+      <motion.div style={{ y, rotate, opacity }}>
+        <div className="absolute top-0 left-0 right-0 flex justify-center items-center h-20">
+          <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+            <path d="M21 3v5h-5" />
+          </svg>
+        </div>
       </motion.div>
-      <motion.div
-        style={{ y: isRefreshing ? 60 : 0 }}
+      <div
         onTouchStart={handleTouchStart}
-        onTouchMove={(e) => handleTouchMove(e, e.currentTarget)}
+        onTouchMove={(e: React.TouchEvent<HTMLDivElement>) => handleTouchMove(e, e.currentTarget)}
         onTouchEnd={handleTouchEnd}
       >
-        {children}
-      </motion.div>
+        <motion.div style={{ y: isRefreshing ? 60 : 0 }}>
+          {children}
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -28,8 +28,9 @@ export default function MobileAgentsPage() {
         </TouchButton>
       </header>
 
-      <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div className="space-y-3">
         {agents.map((agent) => (
+          <motion.div key={agent.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <Card key={agent.id} variant="elevated" padding="md" interactive>
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-2xl bg-primary/10">
@@ -60,8 +61,9 @@ export default function MobileAgentsPage() {
               </TouchButton>
             </div>
           </Card>
+          </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       <BottomSheet isOpen={showCreateSheet} onClose={() => setShowCreateSheet(false)} title="Create Agent">
         <div className="p-4 space-y-3">

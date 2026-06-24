@@ -28,9 +28,10 @@ export default function MobileWorkflowsPage() {
         </TouchButton>
       </header>
 
-      <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div className="space-y-3">
         {workflows.map((workflow) => (
-          <Card key={workflow.id} variant="elevated" padding="md" interactive>
+          <motion.div key={workflow.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <Card variant="elevated" padding="md" interactive>
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-2xl bg-purple-100 dark:bg-purple-900/30">
                 <Zap className="text-purple-600 dark:text-purple-400" size={22} />
@@ -61,9 +62,10 @@ export default function MobileWorkflowsPage() {
                 <Trash2 size={14} />
               </TouchButton>
             </div>
-          </Card>
+            </Card>
+          </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       <BottomSheet isOpen={showCreateSheet} onClose={() => setShowCreateSheet(false)} title="Add Workflow">
         <div className="p-4 space-y-3">

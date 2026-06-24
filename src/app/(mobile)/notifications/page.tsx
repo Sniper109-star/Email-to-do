@@ -58,8 +58,8 @@ export default function MobileNotificationsPage() {
             <CheckCheck size={16} /> Mark all read
           </TouchButton>
         </div>
-        <Card variant="default" padding="none" className="divide-y divide-border">
-          <motion.div className="p-4 space-y-3">
+        <Card variant="default" padding="md" className="divide-y divide-border">
+          <div className="space-y-3">
             {recentNotifications.map((notif) => (
               <div key={notif.id} className={`flex gap-3 ${!notif.read ? "opacity-100" : "opacity-60"}`}>
                 <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${notif.read ? "bg-transparent" : "bg-primary"}`} />
@@ -80,7 +80,7 @@ export default function MobileNotificationsPage() {
                 </div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </Card>
       </section>
     </div>
