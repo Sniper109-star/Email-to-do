@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-type AnyMotionDiv = any;
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "elevated" | "outlined" | "glass";
@@ -35,22 +34,38 @@ export function Card({
     lg: "p-6",
   };
 
-  const MotionDiv = interactive ? require("framer-motion").motion.div : "div";
+  if (interactive) {
+    return (
+      <motion.div whileTap={{ scale: 0.98 }}>
+        <div
+          className={cn(
+            "rounded-3xl transition-all duration-200",
+            variants[variant],
+            paddings[padding],
+            "active:scale-[0.98] cursor-pointer",
+            className
+          )}
+          onClick={onPress}
+          {...props}
+        >
+          {children}
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
-    <MotionDiv
+    <div
       className={cn(
         "rounded-3xl transition-all duration-200",
         variants[variant],
         paddings[padding],
-        interactive && "active:scale-[0.98] cursor-pointer",
         className
       )}
       onClick={onPress}
-      {...(interactive ? { whileTap: { scale: 0.98 } } : {})}
       {...props}
     >
       {children}
-    </MotionDiv>
+    </div>
   );
 }

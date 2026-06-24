@@ -28,27 +28,24 @@ export default function MobileDashboardPage() {
         <p className="text-muted-foreground mt-1 text-sm">Your AI operations overview</p>
       </header>
 
-      <motion.div
-        className="grid grid-cols-2 gap-3"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ staggerChildren: 0.1 }}
-      >
+      <div className="grid grid-cols-2 gap-3">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label} variant="elevated" padding="md" className="flex flex-col gap-2">
-              <div className={`p-2 rounded-xl bg-muted/50 w-fit ${stat.color}`}>
-                <Icon size={20} />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
-              </div>
-            </Card>
+            <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+              <Card variant="elevated" padding="md" className="flex flex-col gap-2">
+                <div className={`p-2 rounded-xl bg-muted/50 w-fit ${stat.color}`}>
+                  <Icon size={20} />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground">{stat.label}</p>
+                </div>
+              </Card>
+            </motion.div>
           );
         })}
-      </motion.div>
+      </div>
 
       <section>
         <div className="flex items-center justify-between mb-3">

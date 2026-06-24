@@ -1,39 +1,74 @@
-// @ts-nocheck
-import SibApiV3Sdk from "sib-api-v3-sdk";
+// Brevo Email Integration using REST API
+const BREVO_API_KEY = process.env.BREVO_API_KEY || "";
+const BREVO_API_BASE = "https://api.brevo.com/v3";
 
-const apiInstance = SibApiV3Sdk.ApiClient.instance;
-const apiKey = apiInstance.authentications["api-key"];
-apiKey.apiKey = process.env.BREVO_API_KEY || "";
-
-export async function sendBrevoEmail({ to, subject, htmlContent, sender }: { to: { email: string; name?: string }[]; subject: string; htmlContent: string; sender: { email: string; name: string } }) {
+export async function sendBrevoEmail({
+  to,
+  subject,
+  htmlContent,
+  sender,
+}: {
+  to: { email: string; name?: string }[];
+  subject: string;
+  htmlContent: string;
+  sender: { email: string; name: string };
+}) {
   try {
-    const sendSmtpEmail = new SibApiV3Sdk.TransactionalEmailsApi();
-    const result = await sendSmtpEmail.sendTransacEmail({
-      sender,
-      to,
-      subject,
-      htmlContent,
+    const response = await fetch(`${BREVO_API_BASE}/smtp/email`, {
+      method: "POST",
+      headers: {
+        "api-key": BREVO_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sender,
+        to,
+        subject,
+        htmlContent,
+      }),
     });
-    return result;
+
+    if (!response.ok) {
+      throw new Error(`Brevo API error: ${response.statusText}`);
+    }
+
+    return await response.json();
   } catch (error) {
     console.error("Brevo error:", error);
     throw error;
   }
 }
 
-export async function createBrevoContact({ email, attributes, listIds }: { email: string; attributes?: Record<string, any>; listIds?: number[] }) {
+export async function createBrevoContact({
+  email,
+  attributes,
+  listIds,
+}: {
+  email: string;
+  attributes?: Record<string, any>;
+  listIds?: number[];
+}) {
   try {
-    const contactsApi = new SibApiV3Sdk.ContactsApi();
-    const result = await contactsApi.createContact({
-      email,
-      attributes,
-      listIds,
+    const response = await fetch(`${BREVO_API_BASE}/contacts`, {
+      method: "POST",
+      headers: {
+        "api-key": BREVO_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        attributes,
+        listIds,
+      }),
     });
-    return result;
+
+    if (!response.ok) {
+      throw new Error(`Brevo API error: ${response.statusText}`);
+    }
+
+    return await response.json();
   } catch (error) {
     console.error("Brevo contact error:", error);
     throw error;
   }
 }
-
-export default apiInstance;
