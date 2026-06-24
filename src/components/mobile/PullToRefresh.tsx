@@ -55,14 +55,15 @@ export function PullToRefresh({ onRefresh, children, className }: PullToRefreshP
           </svg>
         </div>
       </motion.div>
-      <motion.div
-        style={{ y: isRefreshing ? 60 : 0 }}
+      <div
         onTouchStart={handleTouchStart}
-        onTouchMove={(e) => handleTouchMove(e, e.currentTarget)}
+        onTouchMove={(e: React.TouchEvent<HTMLDivElement>) => handleTouchMove(e, e.currentTarget)}
         onTouchEnd={handleTouchEnd}
       >
-        {children}
-      </motion.div>
+        <motion.div style={{ y: isRefreshing ? 60 : 0 }}>
+          {children}
+        </motion.div>
+      </div>
     </div>
   );
 }
