@@ -58,11 +58,18 @@
 
 @layer base {
   *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-upload-button {
+  *::after,
+  *::before {
     border-color: var(--color-border);
+  }
+
+  input[type="file"]::file-selector-button,
+  input[type="file"]::-webkit-file-upload-button {
+    border-color: var(--color-border);
+  }
+
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
   }
   body {
     background-color: var(--color-background);
